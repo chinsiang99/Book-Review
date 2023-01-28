@@ -1,0 +1,3 @@
+#ignore knex file
+/node_modules
+.env
