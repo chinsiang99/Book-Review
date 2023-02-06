@@ -13,8 +13,13 @@ const getBookListing = asyncHandler(async (req, res, next) => {
     .catch(err => {
       console.log(err);
     });
+});
 
+// to get add book page
+const getAddBook = asyncHandler(async (req, res, next) => {
+
+  res.render("bookAdd")
 
 });
 
-module.exports = { getBookListing }
+module.exports = { getBookListing, getAddBook }

@@ -1,10 +1,13 @@
 const { Router } = require("express");
-const { getBookListing } = require("../controller/booksController");
+const { getBookListing, getAddBook } = require("../controller/booksController");
 
 const router = Router();
 
-// route to login
+// route to get book listing page
 router.route("/")
   .get(getBookListing);
+// route to get add book page
+router.route("/add")
+  .get(getAddBook);
 
 module.exports = router;
