@@ -1,9 +1,12 @@
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const express = require('express');
 const { expressErrorHandler } = require('./middleware/error_handlerMiddleware');
 const router = require('./routes');
+const bodyParser = require('body-parser');
+const multer = require('multer');
+const upload = multer();
 
 const app = express();
 
@@ -15,6 +18,10 @@ app.use(express.json());
 
 // to handle form data in body
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// for parsing multipart/form-data
+app.use(upload.array());
+app.use(express.static('public'));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
