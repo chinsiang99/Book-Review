@@ -18,8 +18,24 @@ const getBookListing = asyncHandler(async (req, res, next) => {
 // to get add book page
 const getAddBook = asyncHandler(async (req, res, next) => {
 
-  res.render("bookAdd")
+  res.render("bookAdd", { success: 0 })
 
 });
 
-module.exports = { getBookListing, getAddBook }
+// to add new books
+const AddBook = asyncHandler(async (req, res, next) => {
+  const { bookName, bookImage, bookAuthor, description } = req.body;
+
+  connection.promise().query("INSERT INTO `book` (`bookName`, `bookImage`, `bookAuthor`, `description`) VALUES (?,?,?,?) ", [bookName, bookImage, bookAuthor, description])
+    .then(([rows, fields]) => {
+      console.log(rows);
+      res.render('bookAdd', { success: 1 });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+
+});
+
+module.exports = { getBookListing, getAddBook, AddBook }
