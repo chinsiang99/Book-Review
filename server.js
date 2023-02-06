@@ -31,6 +31,11 @@ app.use(express.static(path.join(__dirname, '/public')));
 // setup base route
 app.use("/", router);
 
+app.use(function (req, res, next) {
+  res.status(404);
+  throw new Error("Not found");
+});
+
 // error handling
 app.use(expressErrorHandler);
 
