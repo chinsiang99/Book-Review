@@ -4,12 +4,11 @@ const cookieParser = require('cookie-parser');
 const express = require('express');
 const { expressErrorHandler } = require('./middleware/error_handlerMiddleware');
 const router = require('./routes');
-require('./config/dbConnection');
 
 const app = express();
 
 // to handle cookies
-app.use(cookieParser);
+app.use(cookieParser());
 
 // to handle json
 app.use(express.json());
