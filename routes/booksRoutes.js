@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { getBookListing, getAddBook, AddBook } = require("../controller/booksController");
+const { getBookListing, getAddBook, AddBook, getBookDescription, AddReview } = require("../controller/booksController");
 
 const router = Router();
 
@@ -14,5 +14,11 @@ router.route("/add")
 // route to get add book page
 router.route("/add")
   .post(AddBook);
+
+router.route("/description/:id")
+  .get(getBookDescription);
+
+router.route("/review/:id")
+  .post(AddReview);
 
 module.exports = router;
