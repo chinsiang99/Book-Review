@@ -28,14 +28,69 @@ const AddBook = asyncHandler(async (req, res, next) => {
 
   connection.promise().query("INSERT INTO `book` (`bookName`, `bookImage`, `bookAuthor`, `description`) VALUES (?,?,?,?) ", [bookName, bookImage, bookAuthor, description])
     .then(([rows, fields]) => {
-      console.log(rows);
       res.render('bookAdd', { success: 1 });
     })
     .catch(err => {
       console.log(err);
     });
 
+});
+
+// get book description page
+const getBookDescription = asyncHandler(async (req, res, next) => {
+
+  const { id } = req.params;
+
+  let book_result = {};
+  let book_rating = {};
+  let book_review = {};
+
+  await connection.promise().query("SELECT book.id, bookName, description, bookImage, bookAuthor FROM book WHERE book.id = ?", [id])
+    .then(([rows, fields]) => {
+      if (rows.length) {
+        book_result = rows[0];
+      } else {
+        res.status(404);
+        throw new Error("Not found");
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+  await connection.promise().query("SELECT AVG(rating) as rating FROM rating WHERE bookId = ?", [id])
+    .then(([rows, fields]) => {
+      book_rating = rows[0];
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+  await connection.promise().query("SELECT review FROM review WHERE bookId = ?", [id])
+    .then(([rows, fields]) => {
+      book_review = rows;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+  res.render('bookDescription', { book_result: book_result, book_rating: book_rating, book_review: book_review });
 
 });
 
-module.exports = { getBookListing, getAddBook, AddBook }
+// to add book review
+const AddReview = asyncHandler(async (req, res, next) => {
+  const { review } = req.body;
+  const { id } = req.params;
+
+  await connection.promise().query("INSERT INTO `review` (`bookId`, `review`) VALUES (?,?) ", [id, review])
+    .then(([rows, fields]) => {
+      res.redirect(req.get('referer'));
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+});
+
+module.exports = { getBookListing, getAddBook, AddBook, getBookDescription, AddReview }
