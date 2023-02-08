@@ -15,23 +15,6 @@
       overflow: hidden;
       height: 300px;
     }
-
-    .rating{
-      display : flex;
-    }
-
-    .rating input{
-      position : absolute;
-      left     : -100vw;
-    }
-
-    .rating label{
-      width      : 48px;
-      height     : 48px;
-      padding    : 48px 0 0;
-      overflow   : hidden;
-      background : url('stars.svg') no-repeat top left;
-    }
     
   </style>
 </head>
@@ -50,18 +33,20 @@
         <h1><%= book_result.bookName %></h1>
         <p style="text-align: justify"><%= book_result.description %></p>
         <p style="text-align: justify"><b>Author of the Book: </b><%= book_result.bookAuthor %></p>
-        <p style="text-align: justify"><b>Ratings: </b><%= book_rating.rating %></p>
-        <div class="rating">
-         <input id="rating1" type="radio" name="rating" value="1">
-         <label for="rating1">1</label>
-         <input id="rating2" type="radio" name="rating" value="2">
-         <label for="rating2">2</label>
-         <input id="rating3" type="radio" name="rating" value="3">
-          <label for="rating3">3</label>
-          <input id="rating4" type="radio" name="rating" value="4">
-          <label for="rating4">4</label>
-          <input id="rating5" type="radio" name="rating" value="5">
-          <label for="rating5">5</label>
+        <% if(!book_rating.rating){ %>
+          <p style="text-align: justify"><b>Ratings: </b>No ratings yet</p>
+        <% }else{ %>    
+          <p style="text-align: justify"><b>Ratings: </b><%= book_rating.rating %> out of 5</p>
+        <% } %>   
+        <div>
+          <form method="post" action="/books/rating">
+            <div class="mb-3">
+              <label for="rating" class="form-label">Leave a raing out of 5 here: </label>
+              <input type="number" step="any" required min="0" max="5" class="form-control" id="rating" name="rating">
+              <input type="hidden" name="bookId" value="<%= book_result.id %>">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
         </div>
       </div>
     </div>
