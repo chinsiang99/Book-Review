@@ -30,7 +30,13 @@
         </div>
       </div>
       <div class="col-sm-6">
-        <h1><%= book_result.bookName %></h1>
+        <div class="d-flex align-items-center">
+          <h1><%= book_result.bookName %></h1>
+          <form action="/books/delete/<%= book_result.id %>" method="post" class="ms-4">
+            <button type="submit" class="btn btn-primary">Delete Book</button>
+          </form>
+        </div>
+        
         <p style="text-align: justify"><%= book_result.description %></p>
         <p style="text-align: justify"><b>Author of the Book: </b><%= book_result.bookAuthor %></p>
         <% if(!book_rating.rating){ %>
@@ -41,12 +47,13 @@
         <div>
           <form method="post" action="/books/rating">
             <div class="mb-3">
-              <label for="rating" class="form-label">Leave a raing out of 5 here: </label>
+              <label for="rating" class="form-label">Leave a rating out of 5 here: </label>
               <input type="number" step="any" required min="0" max="5" class="form-control" id="rating" name="rating">
               <input type="hidden" name="bookId" value="<%= book_result.id %>">
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
+
         </div>
       </div>
     </div>

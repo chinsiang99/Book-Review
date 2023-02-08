@@ -104,4 +104,18 @@ const AddRating = asyncHandler(async (req, res, next) => {
 
 });
 
-module.exports = { getBookListing, getAddBook, AddBook, getBookDescription, AddReview, AddRating }
+// to delete book
+const DeleteBook = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+
+  await connection.promise().query("DELETE FROM book WHERE id = ? ", [id])
+    .then(([rows, fields]) => {
+      res.redirect('/books');
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+});
+
+module.exports = { getBookListing, getAddBook, AddBook, getBookDescription, AddReview, AddRating, DeleteBook }
