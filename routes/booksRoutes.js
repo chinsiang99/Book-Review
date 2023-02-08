@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { getBookListing, getAddBook, AddBook, getBookDescription, AddReview } = require("../controller/booksController");
+const { getBookListing, getAddBook, AddBook, getBookDescription, AddReview, AddRating } = require("../controller/booksController");
 
 const router = Router();
 
@@ -20,5 +20,8 @@ router.route("/description/:id")
 
 router.route("/review/:id")
   .post(AddReview);
+
+router.route("/rating")
+  .post(AddRating);
 
 module.exports = router;

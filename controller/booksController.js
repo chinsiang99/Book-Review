@@ -45,13 +45,10 @@ const getBookDescription = asyncHandler(async (req, res, next) => {
   let book_rating = {};
   let book_review = {};
 
-  await connection.promise().query("SELECT book.id, bookName, description, bookImage, bookAuthor FROM book WHERE book.id = ?", [id])
+  await connection.promise().query("SELECT id, bookName, description, bookImage, bookAuthor FROM book WHERE id = ?", [id])
     .then(([rows, fields]) => {
       if (rows.length) {
         book_result = rows[0];
-      } else {
-        res.status(404);
-        throw new Error("Not found");
       }
     })
     .catch(err => {
@@ -93,4 +90,18 @@ const AddReview = asyncHandler(async (req, res, next) => {
 
 });
 
-module.exports = { getBookListing, getAddBook, AddBook, getBookDescription, AddReview }
+// to add book rating
+const AddRating = asyncHandler(async (req, res, next) => {
+  const { bookId, rating } = req.body;
+
+  await connection.promise().query("INSERT INTO `rating` (`bookId`, `rating`) VALUES (?,?) ", [bookId, rating])
+    .then(([rows, fields]) => {
+      res.redirect(req.get('referer'));
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+});
+
+module.exports = { getBookListing, getAddBook, AddBook, getBookDescription, AddReview, AddRating }
